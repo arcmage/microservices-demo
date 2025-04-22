@@ -9,8 +9,6 @@ import org.springframework.retry.annotation.EnableRetry;
 
 import java.util.Map;
 
-import static java.util.Map.of;
-
 @EnableRetry
 @Configuration
 public class KafkaAdminConfig {
@@ -24,7 +22,8 @@ public class KafkaAdminConfig {
     @Bean
     public AdminClient adminClient() {
 
-        return AdminClient.create(Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaConfigData.getBootstrapServers()));
+        Map<String, Object> conf = new java.util.HashMap<>();
+        conf.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaConfigData.getBootstrapServers());
+        return AdminClient.create(conf);
     }
 }
