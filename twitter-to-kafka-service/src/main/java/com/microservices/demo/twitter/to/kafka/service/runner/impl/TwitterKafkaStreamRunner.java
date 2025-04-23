@@ -1,10 +1,8 @@
 package com.microservices.demo.twitter.to.kafka.service.runner.impl;
 
-
 import com.microservices.demo.config.TwitterToKafkaServiceConfigData;
 import com.microservices.demo.twitter.to.kafka.service.listener.TwitterKafkaStatusListener;
 import com.microservices.demo.twitter.to.kafka.service.runner.StreamRunner;
-import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,6 +12,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 
+import javax.annotation.PreDestroy;
 import java.util.Arrays;
 
 @Component
@@ -28,11 +27,13 @@ public class TwitterKafkaStreamRunner implements StreamRunner {
 
     private TwitterStream twitterStream;
 
-    public TwitterKafkaStreamRunner(TwitterToKafkaServiceConfigData configData, TwitterKafkaStatusListener statusListener) {
+    public TwitterKafkaStreamRunner(TwitterToKafkaServiceConfigData configData,
+                                    TwitterKafkaStatusListener statusListener) {
         this.twitterToKafkaServiceConfigData = configData;
         this.twitterKafkaStatusListener = statusListener;
     }
 
+    @Override
     public void start() throws TwitterException {
         twitterStream = new TwitterStreamFactory().getInstance();
         twitterStream.addListener(twitterKafkaStatusListener);
@@ -40,9 +41,9 @@ public class TwitterKafkaStreamRunner implements StreamRunner {
     }
 
     @PreDestroy
-    public void shutdown(){
-        if(twitterStream != null){
-            LOG.info("Closing twitter stream");
+    public void shutdown() {
+        if (twitterStream != null) {
+            LOG.info("Closing twitter stream!");
             twitterStream.shutdown();
         }
     }

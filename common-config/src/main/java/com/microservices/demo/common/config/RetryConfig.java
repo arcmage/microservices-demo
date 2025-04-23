@@ -10,7 +10,7 @@ import org.springframework.retry.support.RetryTemplate;
 @Configuration
 public class RetryConfig {
 
-    private final RetryConfigData retryConfigData;
+    private RetryConfigData retryConfigData;
 
     public RetryConfig(RetryConfigData configData) {
         this.retryConfigData = configData;
@@ -22,8 +22,8 @@ public class RetryConfig {
 
         ExponentialBackOffPolicy exponentialBackOffPolicy = new ExponentialBackOffPolicy();
         exponentialBackOffPolicy.setInitialInterval(retryConfigData.getInitialIntervalMs());
-        exponentialBackOffPolicy.setMultiplier(retryConfigData.getMultiplier());
         exponentialBackOffPolicy.setMaxInterval(retryConfigData.getMaxIntervalMs());
+        exponentialBackOffPolicy.setMultiplier(retryConfigData.getMultiplier());
 
         retryTemplate.setBackOffPolicy(exponentialBackOffPolicy);
 
